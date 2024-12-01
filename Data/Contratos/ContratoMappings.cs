@@ -85,9 +85,10 @@ namespace Data.Contratos
             var response = RspHandler.OkQuery();
             try
             {
-                response.Data = await _context.Clientes.Include(c => c.Contratos).ThenInclude(co => co.IdSeguroNavigation)
-                    .Where(c => c.Estado == "A" && c.Contratos.Any(co => co.Estado == "A" && co.IdSeguroNavigation.Estado == "A")
-                    )
+                response.Data = await _context.Clientes
+                    .Include(c => c.Contratos.Where(co => co.Estado == "A" && (co.IdSeguroNavigation != null ? co.IdSeguroNavigation.Estado : "") == "A"))
+                    .ThenInclude(co => co.IdSeguroNavigation)
+                    .Where(c => c.Estado == "A")
                     .ToListAsync();
 
                 /*response.Data = await (from cl in _context.Clientes
