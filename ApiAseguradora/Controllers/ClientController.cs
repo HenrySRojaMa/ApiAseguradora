@@ -41,11 +41,11 @@ namespace ApiAseguradora.Controllers
             }
         }
         [HttpGet("list")]
-        public async Task<IActionResult> ListClientsController(int? IdSeguro)
+        public async Task<IActionResult> ListClientsController([FromQuery] ClientListFilter query)
         {
             try
             {
-                return Ok(await _clienteBusiness.ListClientsBusiness(IdSeguro));
+                return Ok(await _clienteBusiness.ListClientsBusiness(query));
             }
             catch (Exception ex)
             {

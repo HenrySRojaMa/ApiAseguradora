@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Models.Entities;
+using Models.Responses;
 
 namespace Data
 {
@@ -27,6 +30,32 @@ namespace Data
             {
                 optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("conexion"));
             }
+        }
+        public async Task<Response> ConnectDatabaseAsync()
+        {
+            Response response = new Response();
+            var connectionString = Environment.GetEnvironmentVariable("conexion");
+
+            try
+            {
+                SqlConnection connection = new SqlConnection(connectionString);
+                await connection.OpenAsync();
+                if (connection.State == ConnectionState.Open)
+                {
+                    response.Code = "00";
+                    response.Data = connection;
+                }
+                else
+                {
+                    response.Code = "01";
+                    response.Message = "No existe conexión con la base de datos. Por favor comuníquese con Soporte.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response = RspHandler.BadResponse(ex, this.GetType().Name, nameof(ConnectDatabaseAsync));
+            }
+            return response;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -25,12 +25,12 @@ namespace Business.Clientes
             _clienteMappings = clienteMappings;
         }
 
-        public async Task<Response> ListClientsBusiness(int? IdSeguro)
+        public async Task<Response> ListClientsBusiness(ClientListFilter query)
         {
             var response = RspHandler.OkQuery();
             try
             {
-                response = await _clienteMappings.ListClientsMapping(IdSeguro);
+                response = await _clienteMappings.ListClientsMapping(query);
                 response.Data = _mapper.Map<List<ClientResponse>>(response.Data);
             }
             catch (Exception ex)

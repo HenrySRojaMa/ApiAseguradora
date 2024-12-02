@@ -146,3 +146,29 @@ USE [master]
 GO
 ALTER DATABASE [Seguros] SET  READ_WRITE 
 GO
+
+CREATE PROCEDURE sp_listar_clientes
+@IdCliente INT = NULL,
+@Cedula VARCHAR(300) = NULL,
+@Nombre VARCHAR(300) = NULL
+AS
+BEGIN
+	--The data types varchar(10) encrypted with (encryption_type = 'DETERMINISTIC', encryption_algorithm_name = 'AEAD_AES_256_CBC_HMAC_SHA_256', column_encryption_key_name = 'CEK-HSRM-2024', column_encryption_key_database_name = 'Seguros') collation_name = 'Latin1_General_BIN2' and varchar are incompatible in the like operator.
+	/*SELECT
+	*
+	FROM Cliente WHERE
+	Estado = 'A' AND IdCliente = ISNULL(@IdCliente,IdCliente)
+	AND Cedula LIKE '%'+ISNULL(@Cedula,'')+'%'
+	AND Nombre LIKE '%'+ISNULL(@Nombre,'')+'%'*/
+
+	SELECT
+	*
+	--INTO #Clien
+	FROM Cliente WHERE
+	Estado = 'A' AND IdCliente = ISNULL(@IdCliente,IdCliente)
+
+	--SELECT * FROM #Clien
+	--Cannot create table '#Clien' since it references a column encryption key from a different database.
+	--DROP TABLE #Clien
+
+END

@@ -8,7 +8,7 @@ namespace Business.Clientes
     {
         Task<Response> DeleteClientBusiness(int IdSeguro);
         Task<Response> ImportClientsBusiness(IFormFile file);
-        Task<Response> ListClientsBusiness(int? IdSeguro);
+        Task<Response> ListClientsBusiness(ClientListFilter query);
         Task<Response> SetClientBusiness(ClientQuery cliente);
     }
 }
